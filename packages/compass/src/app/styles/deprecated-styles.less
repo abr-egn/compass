@@ -1,0 +1,46 @@
+
+@import './palette.less';
+
+// Dependencies
+@import './bootstrap.less';
+@import './caret.less';
+@import './buttons.less';
+@import './react-select.less';
+@import './zero-state.less';
+
+@import './fonts.less';
+@import './mms-icons.less';
+@import './fontawesome.less';
+
+// Configuration
+@import './palette.less';
+
+@sidebar-width: 250px;
+
+// Tweaks to bootstrap
+@import './message-background.less';
+
+/* Styles from previous internal-plugin app */
+@import './modal-status-message.less';
+@import './hadron-tooltip.less';
+@import './info-sprinkle.less';
+@import './option-selector.less';
+@import './sortable-table.less';
+@import './status-row.less';
+@import './tab-nav-bar.less';
+
+
+.input-group.has-error {
+  i.syntax-help {
+    color: #a94442; // same color as bootstrap validation error borders
+  }
+}
+
+//action-bar, just a drop-shadow for now but should think about where to put these styles eventually
+.action-bar {
+  height: 32px;
+  background: @gray8;
+  border-bottom: 1px solid @gray7;
+  padding-top: 4px;
+  padding-left: 15px;
+}

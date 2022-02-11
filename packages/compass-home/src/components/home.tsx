@@ -5,12 +5,18 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { ThemeProvider, css } from '@mongodb-js/compass-components';
-import { Theme } from '@mongodb-js/compass-components';
+import {
+  Theme,
+  ThemeProvider,
+  css,
+  getRegisteredStyles
+  // cache
+} from '@mongodb-js/compass-components';
 import { getConnectionTitle } from 'mongodb-data-service';
 import type { ConnectionInfo, DataService } from 'mongodb-data-service';
 import toNS from 'mongodb-ns';
 import Connections from '@mongodb-js/compass-connections';
+import ipc from 'hadron-ipc';
 
 import Workspace from './workspace';
 import type Namespace from '../types/namespace';
@@ -20,7 +26,10 @@ import {
   useAppRegistryRole,
 } from '../contexts/app-registry-context';
 import updateTitle from '../modules/update-title';
-import ipc from 'hadron-ipc';
+import { globallyResetCss } from './reset-css';
+import { globallyApplyBootstrap } from './globally-apply-bootstrap';
+import { flushThemedGlobals } from './themed-global';
+// import createCache from '@emotion/cache';
 
 const homeViewStyles = css({
   display: 'flex',
@@ -180,6 +189,23 @@ function Home({ appName }: { appName: string }): React.ReactElement | null {
   useEffect(() => {
     if (isConnected) {
       updateTitle(appName, connectionTitle, namespace);
+
+      // const body = document.body;
+
+      // body.classList.remove('test123');
+
+      // Unglobally reset css?
+      // Globally apply bootstraps?
+      flushThemedGlobals();
+      // getRegisteredStyles
+      globallyApplyBootstrap();
+
+      
+    } else {
+
+      // cache
+      flushThemedGlobals();
+      globallyResetCss();
     }
   }, [isConnected, appName, connectionTitle, namespace]);
 
@@ -247,7 +273,12 @@ function Home({ appName }: { appName: string }): React.ReactElement | null {
   }, [appRegistry, onDataServiceDisconnected]);
 
   if (isConnected) {
-    return <Workspace namespace={namespace} />;
+    return (
+      <div className="with-bootstrap-styles">
+        <style scoped>{`${require('./test.less')}`}</style>
+        <Workspace namespace={namespace} />
+      </div>
+    );
   }
 
   if (showNewConnectForm) {
@@ -268,7 +299,9 @@ function Home({ appName }: { appName: string }): React.ReactElement | null {
   return (
     <div className={homeViewStyles} data-test-id="home-view">
       <div className={homePageStyles}>
-        <Connect />
+        <div className="with-bootstrap-styles">
+          <Connect />
+        </div>
       </div>
     </div>
   );

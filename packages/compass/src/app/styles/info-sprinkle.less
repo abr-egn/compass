@@ -1,3 +1,19 @@
+// make all help buttons consistent
+i.help,
+i.syntax-help {
+  .fa-icon();
+  margin: 0 5px;
+  cursor: pointer;
+  color: @gray5;
+
+  &:hover {
+    color: @alertOrange;
+  }
+  &:before {
+    content: @fa-var-info-circle;
+  }
+}
+
 i.info-sprinkle {
   .fa-icon();
   margin-left: 5px;
